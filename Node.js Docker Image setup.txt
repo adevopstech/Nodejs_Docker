@@ -1,0 +1,125 @@
+#<==================== Nodejs Install Through Docker Image =========>
+
+
+Note : 
+      reference url : https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
+
+
+yum update && yum upgrade -y
+yum install docker -y
+systemctl start docker
+docker --version
+
+mkdir docker_web_app
+cd docker_web_app
+npm init
+
+
+package.json
+========================================
+{
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "nodejs on docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "k"
+  ],
+  "author": "sam",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+
+
+npm install --save express
+
+
+Express is Integradted in package.json
+=======================================
+nano package.json
+
+"dependencies": {
+    "express": "^4.17.1"
+  }
+
+
+
+server.js
+======================================
+'use strict';
+
+const express = require('express');
+
+// Constants
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
+// App
+const app = express();
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
+
+
+
+Setup a Docker File
+=======================
+
+nano dockerfile
+
+FROM node:14
+
+WORKDIR /usr/src/app   # Create app directory
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD [ "node", "server.js" ]
+
+==================================
+
+
+Setup Docker Ignore File
+========================
+
+nano .dockerignore
+
+node_modules
+npm-debug.log
+
+========================
+
+
+Build and Run Docker Image
+=============================
+
+docker build -t nodeweb:latest .
+
+docker run -p <any random unused port>:8080 -d nodeweb:latest
+
+docker inspect <container_id>
+
+docker logs <container_id>
+
+curl -i http://localhost:<define port>
+
+==============================
+
+
+
+
+
+
+
