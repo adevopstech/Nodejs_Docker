@@ -1,10 +1,6 @@
 #<==================== Docker Image Deploy through NodeJs =========>
 
 
-Note : 
-      reference url : https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
-
-
 yum update && yum upgrade -y
 yum install docker -y
 systemctl start docker
